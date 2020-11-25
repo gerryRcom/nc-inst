@@ -41,7 +41,7 @@ service apache2 restart
 wget $dload -O ncsetup.zip
 unzip ./ncsetup.zip
 mkdir /srv/nc_data
-mv ./nextcloud/* /var/www/nextcloud
+mv ./nextcloud /var/www
 chown -R www-data:www-data /var/www/nextcloud/
 chown -R www-data:www-data /srv/nc_data/
 

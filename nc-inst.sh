@@ -1,11 +1,13 @@
 #!/bin/bash
 # to use run sudo nc-inst.sh https://url-to-latest-nextcloud-tar
+# run from a su shell to avoid issues with the mysql commands (depends on server config)
+mysql_pwd="enter-mysql-pwd"
 apt update
 apt upgrade -y
 apt install apache2 mariadb-server -y
 apt install libapache2-mod-php -y
 apt install php7.4-bz2 php7.4-curl php7.4-gd php7.4-intl php7.4-json php7.4-mbstring php7.4-mysql php7.4-xml php7.4-zip php-mime-type php-imagick -y
-# sudo mysql_secure_installation
+#mysql_secure_installation
 echo 'Alias /nextcloud "/var/www/nextcloud/"' > /etc/apache2/sites-available/nextcloud.conf
 echo '' >> /etc/apache2/sites-available/nextcloud.conf
 echo '<Directory /var/www/nextcloud/>' >> /etc/apache2/sites-available/nextcloud.conf
@@ -32,4 +34,5 @@ wget $1 -O ncsetup.zip
 unzip ./ncsetup.zip
 mv ./nextcloud/* /var/www/nextcloud
 chown -R www-data:www-data /var/www/nextcloud/
-
+mysql -u root -p -e "CREATE DATABASE nc_db;"
+mysql -u root -p -e "CREATE USER 'nc_user'@'localhost' IDENTIFIED BY '$mysql_pwd'; GRANT ALL PRIVILEGES ON nc_db.* TO 'nc_user'@'localhost'; FLUSH PRIVILEGES;"

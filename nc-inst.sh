@@ -1,7 +1,8 @@
 #!/bin/bash
-# to use run sudo nc-inst.sh https://url-to-latest-nextcloud-tar
+# to use run sudo nc-inst.sh and enter required values.
 # run from a su shell to avoid issues with the mysql commands (depends on server config)
-mysql_pwd="enter-mysql-pwd"
+read -p "Enter url to current NextCloud zip: " dload
+read -p "Enter required password for mysql user: " mysql_pwd
 apt update
 apt upgrade -y
 apt install apache2 mariadb-server -y
@@ -30,9 +31,25 @@ a2enmod ssl
 a2ensite default-ssl
 service apache2 restart
 apt install unzip
-wget $1 -O ncsetup.zip
+wget $dload -O ncsetup.zip
 unzip ./ncsetup.zip
+mkdir /srv/nc_data
 mv ./nextcloud/* /var/www/nextcloud
 chown -R www-data:www-data /var/www/nextcloud/
+chown -R www-data:www-data /srv/nc_data/
 mysql -u root -p -e "CREATE DATABASE nc_db;"
 mysql -u root -p -e "CREATE USER 'nc_user'@'localhost' IDENTIFIED BY '$mysql_pwd'; GRANT ALL PRIVILEGES ON nc_db.* TO 'nc_user'@'localhost'; FLUSH PRIVILEGES;"
+read -p "Press enter to continue"
+clear
+echo 'Installation should now be complete'
+echo 'Please go to https://serveripaddress/nextcloud'
+echo 'On the setup page enter the details below'
+echo ''
+echo 'Data folder: /srv/nc_data/'
+echo 'DB User: nc_user'
+echo 'DB Name: nc_db'
+echo ''
+echo 'Thank you!'
+echo ''
+read -p "Press enter to continue"
+clear

@@ -10,7 +10,7 @@ apt update
 apt upgrade -y
 apt install apache2 mariadb-server unzip -y
 apt install libapache2-mod-php -y
-apt install php7.4-bz2 php7.4-curl php7.4-gd php7.4-intl php7.4-json php7.4-mbstring php7.4-mysql php7.4-xml php7.4-zip php-mime-type php-imagick -y
+apt install php7.4-bz2 php7.4-curl php7.4-gd php7.4-intl php7.4-json php7.4-mbstring php7.4-mysql php7.4-xml php7.4-zip php-mime-type php-imagick php7.4-gmp php7.4-bcmath -y
 
 # create Apache vhost file for nextcloud
 echo 'Alias /nextcloud "/var/www/nextcloud/"' > /etc/apache2/sites-available/nextcloud.conf
